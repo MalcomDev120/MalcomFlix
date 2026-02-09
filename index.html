@@ -3,272 +3,246 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MalcomFlix Admin</title>
-
+<title>Malcomflix 🎬</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 <style>
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: "Segoe UI", sans-serif;
-}
-
-/* BACKGROUND VIDEO */
-.video-bg {
-  position: fixed;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  z-index: -2;
-}
-
-/* FALLBACK IMAGE (MOBILE) */
-.bg-image {
-  position: fixed;
-  inset: 0;
-  background: url("assets/images/background.jpg") center/cover no-repeat;
-  z-index: -3;
-}
-
-/* OVERLAY */
-.overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.78);
-  z-index: -1;
-}
-
-body {
-  color: white;
-}
-
-/* HEADER */
-header {
-  padding: 20px 40px;
-  background: rgba(0,0,0,0.85);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.logo {
-  font-size: 22px;
-  font-weight: bold;
-}
-
-.logo span {
-  color: red;
-}
-
-/* CONTENT */
-.container {
-  padding: 40px;
-}
-
-.card {
-  background: rgba(26,26,26,0.95);
-  padding: 25px;
-  border-radius: 10px;
-  margin-bottom: 30px;
-}
-
-.card h2 {
-  margin-bottom: 15px;
-}
-
-/* INPUTS */
-#loginBox input,
-.card input {
-  width: 100%;
-  padding: 12px;
-  margin-bottom: 15px;
-  border: none;
-  border-radius: 5px;
-}
-
-/* BUTTONS */
-button {
-  padding: 10px 20px;
-  background: red;
-  border: none;
-  color: white;
-  cursor: pointer;
-  border-radius: 4px;
-}
-
-button:hover {
-  opacity: 0.9;
-}
-
-.delete {
-  background: #ff3333;
-}
-
-/* MOVIE LIST */
-.movie-item {
-  display: flex;
-  justify-content: space-between;
-  padding: 10px 0;
-  border-bottom: 1px solid #333;
-}
-
-/* HIDDEN */
-.hidden {
-  display: none;
-}
-
-/* MOBILE OPTIMIZATION */
-@media (max-width: 768px) {
-  .video-bg {
-    display: none;
+  /* --- BASE STYLES --- */
+  body {
+    margin: 0; font-family: 'Roboto', sans-serif;
+    background: linear-gradient(to bottom, #0d0d0d, #1a1a1a);
+    color: #fff;
   }
-}
+  a { text-decoration: none; color: inherit; }
+  h2 { text-align: center; margin: 30px 0; font-size: 2em; }
+
+  /* --- NAVBAR --- */
+  nav {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 15px 50px; background: #111;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.7);
+    position: sticky; top: 0; z-index: 1000;
+  }
+  nav h1 { font-size: 1.8em; color: #ff0000; }
+  nav ul { display: flex; gap: 25px; list-style: none; }
+  nav ul li a {
+    font-weight: bold; padding: 8px 15px; border-radius: 5px;
+    transition: 0.3s;
+  }
+  nav ul li a:hover { background: #ff0000; color: #fff; }
+
+  /* --- CARD CONTAINER --- */
+  .card {
+    background: #1c1c1c; margin: 30px auto; padding: 30px;
+    border-radius: 15px; max-width: 1200px; box-shadow: 0 5px 20px rgba(0,0,0,0.7);
+  }
+
+  /* --- MOVIE GALLERY GRID --- */
+  .movie-gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fit,minmax(200px,1fr));
+    gap: 25px;
+  }
+
+  /* --- MOVIE CARD --- */
+  .movie-card {
+    background: #222; border-radius: 12px; overflow: hidden;
+    text-align: center; cursor: pointer; transition: transform 0.3s, box-shadow 0.3s;
+  }
+  .movie-card:hover {
+    transform: scale(1.07);
+    box-shadow: 0 10px 25px rgba(255,0,0,0.5);
+  }
+  .movie-card img { width: 100%; display: block; border-bottom: 1px solid #333; }
+  .movie-card h3 { margin: 12px 0; font-size: 1.1em; }
+  .movie-card button {
+    background: #ff0000; color: white; border:none;
+    padding: 10px 20px; margin-bottom: 15px; border-radius: 8px;
+    font-weight: bold; transition: 0.3s; cursor: pointer;
+  }
+  .movie-card button:hover { background: #e60000; }
+
+  #subscribeNotice {
+    color: #ccc; text-align: center; margin-top: 20px;
+    font-size: 1em;
+  }
+
+  /* --- MODAL --- */
+  #movieModal {
+    position: fixed; top:0; left:0; width:100%; height:100%;
+    background: rgba(0,0,0,0.95); display: none;
+    justify-content: center; align-items: center; z-index: 9999;
+  }
+  #movieModalContent { position: relative; width: 90%; max-width: 900px; }
+  #movieModal iframe { width: 100%; height: 500px; border-radius: 10px; border:none; }
+  #movieModal button {
+    position: absolute; top:-40px; right:0; background:#ff0000;
+    color:white; border:none; border-radius:5px; padding:10px 15px;
+    cursor:pointer; font-size:16px; transition: 0.3s;
+  }
+  #movieModal button:hover { background:#e60000; }
+
+  /* --- PAYPAL BUTTON --- */
+  #paypal-button-container { display: flex; justify-content: center; margin-top: 20px; }
+
+  /* --- SUBSCRIBE BUTTON --- */
+  #subscribeButton {
+    background: #00cc00; color: white; border:none;
+    padding: 12px 25px; margin: 20px auto; display: block;
+    border-radius: 10px; font-weight: bold; cursor: pointer;
+    transition: 0.3s;
+  }
+  #subscribeButton:hover { background: #00aa00; }
+
+  /* --- CONTACT BUTTON --- */
+  #contactButton {
+    background: #333; color: #fff; border:none;
+    padding: 10px 20px; margin: 20px auto; display: block;
+    border-radius: 10px; font-weight: bold; cursor: pointer;
+    transition: 0.3s;
+    display: block;
+  }
+  #contactButton:hover { background: #555; }
+  #contactInfo {
+    display: none; text-align: center; margin-top: 15px; color: #ccc;
+    font-size: 0.95em;
+  }
+
+  /* --- RESPONSIVE --- */
+  @media(max-width:600px){
+    nav { flex-direction: column; gap: 10px; padding: 15px; }
+    .movie-card button { padding: 8px 15px; font-size: 0.9em; }
+  }
 </style>
 </head>
-
 <body>
 
-<!-- FALLBACK IMAGE -->
-<div class="bg-image"></div>
+<!-- NAVIGATION -->
+<nav>
+  <h1>Malcomflix 🎬</h1>
+  <ul>
+    <li><a href="#gallery">Movies</a></li>
+    <li><a href="#subscribeNotice">Subscribe</a></li>
+    <li><a href="#contactInfo">Contact</a></li>
+  </ul>
+</nav>
 
-<!-- BACKGROUND VIDEO -->
-<video id="bgVideo" class="video-bg" autoplay muted loop playsinline></video>
-<div class="overlay"></div>
+<!-- MOVIE GALLERY -->
+<div id="movieGallery" class="card">
+  <h2>🎥 Your Video Collection</h2>
+  <div class="movie-gallery" id="gallery"></div>
 
-<header>
-  <div class="logo">Malcom<span>Flix</span> Admin</div>
-  <button onclick="logout()">Logout</button>
-</header>
+  <p id="subscribeNotice">
+    Unlock all movies by subscribing! <br>
+    <strong>Paid access: $5.00</strong>
+  </p>
+  <button id="subscribeButton">Subscribe Now</button>
+  <div id="paypal-button-container"></div>
 
-<div class="container">
-
-  <div id="loginBox" class="card">
-    <h2>🔐 Admin Login</h2>
-    <input type="password" id="adminPin" placeholder="Enter Admin PIN">
-    <button onclick="login()">Login</button>
+  <!-- Hidden Contact Button -->
+  <button id="contactButton" onclick="toggleContact()">Contact & Legal Info</button>
+  <div id="contactInfo">
+    📞 +33 753832799 <br>
+    📧 ma_lion_22@yahoo.co.uk <br>
+    🏢 Head Office: France <br>
+    © Malcomflix 2026
   </div>
+</div>
 
-  <div id="dashboard" class="hidden">
-
-    <div class="card">
-      <h2>👤 Subscription Control</h2>
-      <button onclick="unlockUser()">Unlock Subscription</button>
-      <button onclick="lockUser()">Lock Subscription</button>
-    </div>
-
-    <div class="card">
-      <h2>🎬 Add Movie</h2>
-      <input id="movieTitle" placeholder="Movie Title">
-      <input id="movieImage" placeholder="Image Path (assets/images/...)">
-      <input id="movieVideo" placeholder="Video Path (assets/videos/...)">
-      <button onclick="addMovie()">Add Movie</button>
-    </div>
-
-    <div class="card">
-      <h2>📽 Movie List</h2>
-      <div id="movieList"></div>
-    </div>
-
+<!-- MODAL FOR MOVIE PLAYBACK -->
+<div id="movieModal">
+  <div id="movieModalContent">
+    <button onclick="closeModal()">✖ Close</button>
+    <iframe id="modalVideo" src="" allowfullscreen></iframe>
   </div>
 </div>
 
 <script>
-/* RANDOM BACKGROUND VIDEOS */
-const bgVideos = [
-  "assets/videos/bg1.mp4",
-  "assets/videos/bg2.mp4",
-  "assets/videos/bg3.mp4"
-];
-
-const bgVideo = document.getElementById("bgVideo");
-const randomVideo = bgVideos[Math.floor(Math.random() * bgVideos.length)];
-bgVideo.src = randomVideo;
-
-/* ADMIN LOGIC */
-const ADMIN_PIN = "1234";
-
-function login() {
-  if (adminPin.value === ADMIN_PIN) {
-    localStorage.setItem("admin_logged", "true");
-    showDashboard();
-  } else {
-    alert("❌ Wrong PIN");
-  }
+/* --- MOCK USER PAID VIDEOS --- */
+function getUserVideos() {
+  return [
+    {title:"Premium Movie 1", image:"assets/images/premium1.jpg", video:"https://youtu.be/VIDEOID3"},
+    {title:"Premium Movie 2", image:"assets/images/premium2.jpg", video:"https://youtu.be/VIDEOID4"},
+    {title:"Premium Movie 3", image:"assets/images/premium3.jpg", video:"https://youtu.be/VIDEOID5"},
+    {title:"Premium Movie 4", image:"assets/images/premium4.jpg", video:"https://youtu.be/VIDEOID6"}
+  ];
 }
 
-function logout() {
-  localStorage.removeItem("admin_logged");
-  location.reload();
+/* --- CONVERT YOUTUBE URL FOR EMBED --- */
+function convertYouTubeURL(url) {
+  const id = url.split("youtu.be/")[1] || url.split("v=")[1];
+  return `https://www.youtube.com/embed/${id}?autoplay=1`;
 }
 
-function showDashboard() {
-  loginBox.style.display = "none";
-  dashboard.classList.remove("hidden");
-  loadMovies();
-}
+/* --- DISPLAY VIDEO GALLERY --- */
+function showGallery() {
+  const videos = getUserVideos();
+  const gallery = document.getElementById("gallery");
+  gallery.innerHTML = "";
 
-if (localStorage.getItem("admin_logged") === "true") {
-  showDashboard();
-}
+  const freeMovies = [
+    {title:"Free Movie 1", image:"assets/images/free1.jpg", video:"https://youtu.be/VIDEOID1"},
+    {title:"Free Movie 2", image:"assets/images/free2.jpg", video:"https://youtu.be/VIDEOID2"},
+    {title:"Free Movie 3", image:"assets/images/free3.jpg", video:"https://youtu.be/VIDEOID7"},
+    {title:"Free Movie 4", image:"assets/images/free4.jpg", video:"https://youtu.be/VIDEOID8"}
+  ];
 
-/* SUBSCRIPTION */
-function unlockUser() {
-  localStorage.setItem("malcomflix_subscribed", "true");
-  alert("✅ User subscription unlocked");
-}
+  const allVideos = [...freeMovies, ...videos];
 
-function lockUser() {
-  localStorage.removeItem("malcomflix_subscribed");
-  alert("🔒 User subscription locked");
-}
-
-/* MOVIES */
-function getMovies() {
-  return JSON.parse(localStorage.getItem("movies")) || [];
-}
-
-function saveMovies(movies) {
-  localStorage.setItem("movies", JSON.stringify(movies));
-}
-
-function addMovie() {
-  if (!movieTitle.value || !movieImage.value || !movieVideo.value) {
-    alert("⚠️ Fill all fields");
-    return;
-  }
-
-  const movies = getMovies();
-  movies.push({
-    title: movieTitle.value,
-    image: movieImage.value,
-    video: movieVideo.value
-  });
-
-  saveMovies(movies);
-  movieTitle.value = movieImage.value = movieVideo.value = "";
-  loadMovies();
-}
-
-function deleteMovie(index) {
-  const movies = getMovies();
-  movies.splice(index, 1);
-  saveMovies(movies);
-  loadMovies();
-}
-
-function loadMovies() {
-  movieList.innerHTML = "";
-  getMovies().forEach((movie, i) => {
-    movieList.innerHTML += `
-      <div class="movie-item">
-        <span>${movie.title}</span>
-        <button class="delete" onclick="deleteMovie(${i})">Delete</button>
-      </div>
+  allVideos.forEach(video => {
+    const isPaid = videos.includes(video);
+    const card = document.createElement("div");
+    card.className = "movie-card";
+    card.innerHTML = `
+      <img src="${video.image}" alt="${video.title}">
+      <h3>${video.title} ${isPaid ? '🔒' : '✅ Free'}</h3>
+      <button onclick="playMovieModal('${convertYouTubeURL(video.video)}', '${isPaid ? 'paid' : 'free'}')">
+        ${isPaid ? 'Watch (Locked)' : 'Watch Now'}
+      </button>
     `;
+    gallery.appendChild(card);
   });
 }
+
+/* --- OPEN MOVIE MODAL --- */
+function playMovieModal(url, type) {
+  const modal = document.getElementById("movieModal");
+  const iframe = document.getElementById("modalVideo");
+
+  if(type === "paid" && localStorage.getItem("malcomflix_subscribed") !== "true") {
+    alert("🔒 This movie is locked. You can still view it for testing purposes.");
+  }
+
+  iframe.src = url;
+  modal.style.display = "flex";
+}
+
+/* --- CLOSE MODAL --- */
+function closeModal() {
+  const modal = document.getElementById("movieModal");
+  const iframe = document.getElementById("modalVideo");
+  iframe.src = "";
+  modal.style.display = "none";
+}
+
+/* --- SUBSCRIBE BUTTON --- */
+document.getElementById("subscribeButton").addEventListener("click", () => {
+  localStorage.setItem("malcomflix_subscribed", "true");
+  alert("🎉 You are now subscribed! All paid movies are unlocked.");
+  showGallery(); // refresh gallery to show unlocked state
+});
+
+/* --- TOGGLE CONTACT INFO --- */
+function toggleContact() {
+  const info = document.getElementById("contactInfo");
+  info.style.display = info.style.display === "none" ? "block" : "none";
+}
+
+/* --- INIT --- */
+showGallery();
 </script>
 
 </body>
 </html>
+
+
+
