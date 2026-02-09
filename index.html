@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>MalcomFlix</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<script>
+function enterFullscreen(video) {
+    if (video.requestFullscreen) {
+        video.requestFullscreen();
+    } else if (video.webkitRequestFullscreen) { // Safari
+        video.webkitRequestFullscreen();
+    } else if (video.msRequestFullscreen) { // IE/Edge
+        video.msRequestFullscreen();
+    }
+}
+</script>
+
+<body>
+
+<header class="navbar">
+    <div class="logo-container">
+        <a href="index.html">
+            <img src="log5.png" alt="MalcomFlix Logo" class="log5.png">
+        </a>
+        <h1 class="logo"><a href="index.html">MalcomFlix</a></h1>
+    </div>
+    <nav>
+        <a href="website.html">Home</a>
+        <a href="movies.html">Movies</a>
+        <a href="genres.html">Genres</a>
+        <a href="login.html">Login</a>
+    </nav>
+</header>
+
+<!-- Scrolling advertisement line -->
+<div class="ad-line">
+    <p id="ad-text">
+        Watch the latest blockbusters and exclusive content only on MalcomFlix! New movies added every week!
+    </p>
+</div>
+
+<section class="hero">
+    <div class="hero-content">
+        <h2>Avengers: Endgame</h2>
+        <p>The epic conclusion of the Infinity Saga.</p>
+        <button onclick="window.location.href='Le Roi Lion SIMBA.mp4'">
+            ▶ Watch Trailer<
+        </button>
+    </div>
+</section>
+
+<section class="movies">
+    <h3>Trending Movies</h3>
+    <div class="movie-grid">
+        <div class="movie-card">
+            <video
+                poster="Group 5.png"
+                width="25%"
+                controls
+                preload="none"
+                onplay="enterFullscreen(this)"
+            >
+                <source src="Le Petit Nicolas .mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+            <h4>
+                <a href="Le Petit Nicolas .mp4">Inception</a>
+            </h4>
+        </div>
+    </div>
+</section>
+
+<div class="movie-card">
+    <a href="BELLE ET SEBASTIEN  - Episode 1  Le monstre des Pyrénées - YouTube.mp4">
+        <img src="sebastin.png" alt="Interstellar" style="width: 25%;">
+    </a>
+    <h4>
+        <a href="BELLE ET SEBASTIEN  - Episode 1  Le monstre des Pyrénées - YouTube.mp4">Interstellar</a>
+    </h4>
+</div>
+
+<div class="movie-card">
+    <a href="BELLE ET SEBASTIEN - Episode 2  Un enfant est né ( dessin animé Piwi ) - YouTube.mp4">
+        <img src="NEWLOG.png" alt="Joker" style="width: 25%;">
+    </a>
+    <h4><a href="Lion video.mp4">Joker</a></h4>
+</div>
+
+<footer>
+    <p>© 2026 MalcomFlix. All rights reserved.</p>
+</footer>
+
+<!-- WhatsApp Subscription Button -->
+<a href="https://wa.me/33753832799?text=SUBSCRIBE%20MALCOMFLIX"
+   class="whatsapp-subscribe"
+   target="_blank"
+   aria-label="Subscribe to MalcomFlix on WhatsApp">
+   💬
+</a>
+
+</body>
+</html>
