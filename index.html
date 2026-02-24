@@ -1,248 +1,435 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Malcomflix 🎬</title>
-<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+<title>Malcomflix 🎬 Cinema Edition</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800;900&display=swap" rel="stylesheet">
+
 <style>
-  /* --- BASE STYLES --- */
-  body {
-    margin: 0; font-family: 'Roboto', sans-serif;
-    background: linear-gradient(to bottom, #0d0d0d, #1a1a1a);
-    color: #fff;
-  }
-  a { text-decoration: none; color: inherit; }
-  h2 { text-align: center; margin: 30px 0; font-size: 2em; }
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
-  /* --- NAVBAR --- */
+body {
+  font-family: 'Montserrat', sans-serif;
+  background: #000;
+  color: #fff;
+  overflow-x: hidden;
+}
+
+/* NAV */
+nav {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 60px;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.9), transparent);
+  z-index: 1000;
+}
+
+nav h2 {
+  color: #e50914;
+  font-weight: 900;
+  letter-spacing: 2px;
+  cursor: default;
+}
+
+nav ul {
+  list-style: none;
+  display: flex;
+  gap: 30px;
+}
+
+nav a {
+  cursor: pointer;
+  font-weight: 600;
+  color: #fff;
+  transition: 0.3s;
+  text-decoration: none;
+}
+
+nav a:hover {
+  color: #e50914;
+}
+
+/* HERO */
+.hero {
+  position: relative;
+  height: 100vh;
+  background: url('https://images.unsplash.com/photo-1505685296765-3a2736de412f?auto=format&fit=crop&w=1920&q=80') center/cover no-repeat;
+  display: flex;
+  align-items: center;
+  padding: 80px;
+}
+
+.hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, #000 20%, rgba(0,0,0,0.5));
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: 700px;
+}
+
+.hero h1 {
+  font-size: 80px;
+  font-weight: 900;
+  color: #e50914;
+  text-shadow: 0 0 40px rgba(229,9,20,0.7);
+}
+
+.hero p {
+  margin: 25px 0;
+  font-size: 20px;
+  line-height: 1.6;
+  color: #ddd;
+}
+
+.play-btn {
+  padding: 18px 45px;
+  font-size: 20px;
+  border: none;
+  border-radius: 5px;
+  background: #e50914;
+  color: #fff;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.play-btn:hover {
+  background: #ff1f2f;
+  transform: scale(1.08);
+}
+
+/* SECTIONS */
+.section {
+  padding: 100px 60px;
+}
+
+.section-title {
+  font-size: 40px;
+  font-weight: 900;
+  margin-bottom: 20px;
+  text-transform: uppercase;
+  border-left: 6px solid #e50914;
+  padding-left: 15px;
+}
+
+/* GRID */
+.channel-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 35px;
+}
+
+/* HORIZONTAL SCROLL (Netflix Style) */
+.horizontal-scroll {
+  display: flex;
+  gap: 25px;
+  overflow-x: auto;
+  padding-bottom: 10px;
+}
+
+.horizontal-scroll::-webkit-scrollbar {
+  height: 8px;
+}
+
+.horizontal-scroll::-webkit-scrollbar-thumb {
+  background: #e50914;
+  border-radius: 4px;
+}
+
+/* CARD */
+.channel-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 15px;
+  cursor: pointer;
+  transition: 0.4s;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+  min-width: 220px;
+}
+
+.channel-card img {
+  width: 100%;
+  height: 320px;
+  object-fit: cover;
+  transition: 0.4s;
+}
+
+.channel-card:hover img {
+  transform: scale(1.1);
+}
+
+/* GRADIENT OVERLAY */
+.channel-card .overlay {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  padding: 20px;
+  background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+  transition: 0.3s;
+}
+
+.channel-card:hover .overlay {
+  background: linear-gradient(to top, rgba(0,0,0,1), transparent);
+}
+
+.overlay h3 {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+/* BADGES */
+.badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  padding: 5px 12px;
+  font-size: 12px;
+  font-weight: bold;
+  border-radius: 3px;
+}
+
+.live { background: #e50914; }
+.film { background: #ff9900; }
+
+/* PLAY ICON */
+.channel-card::after {
+  content: "▶";
+  position: absolute;
+  bottom: 15px;
+  right: 15px;
+  background: #e50914;
+  padding: 10px 14px;
+  border-radius: 50%;
+  font-size: 18px;
+  opacity: 0;
+  transition: 0.3s;
+}
+
+.channel-card:hover::after { opacity: 1; }
+
+/* LOCK */
+#lockScreen {
+  position: fixed;
+  inset: 0;
+  background: #000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 5000;
+}
+
+.lock-box {
+  text-align: center;
+}
+
+.lock-box h2 { color: #e50914; margin-bottom: 20px; }
+
+.lock-box input {
+  padding: 12px;
+  width: 250px;
+  border: none;
+  border-radius: 4px;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+.unlock-btn {
+  padding: 12px 30px;
+  background: #e50914;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+.unlock-btn:hover { background: #ff1f2f; }
+
+footer {
+  text-align: center;
+  padding: 40px;
+  background: #111;
+  color: #777;
+  font-size: 14px;
+}
+
+/* KIDS DESCRIPTION */
+.kids-desc {
+  margin-bottom: 25px;
+  font-size: 18px;
+  color: #ddd;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
   nav {
-    display: flex; justify-content: space-between; align-items: center;
-    padding: 15px 50px; background: #111;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.7);
-    position: sticky; top: 0; z-index: 1000;
+    padding: 15px 30px;
   }
-  nav h1 { font-size: 1.8em; color: #ff0000; }
-  nav ul { display: flex; gap: 25px; list-style: none; }
-  nav ul li a {
-    font-weight: bold; padding: 8px 15px; border-radius: 5px;
-    transition: 0.3s;
+  .hero h1 {
+    font-size: 50px;
   }
-  nav ul li a:hover { background: #ff0000; color: #fff; }
-
-  /* --- CARD CONTAINER --- */
-  .card {
-    background: #1c1c1c; margin: 30px auto; padding: 30px;
-    border-radius: 15px; max-width: 1200px; box-shadow: 0 5px 20px rgba(0,0,0,0.7);
+  .hero p {
+    font-size: 16px;
   }
-
-  /* --- MOVIE GALLERY GRID --- */
-  .movie-gallery {
-    display: grid;
-    grid-template-columns: repeat(auto-fit,minmax(200px,1fr));
-    gap: 25px;
+  .section {
+    padding: 60px 20px;
   }
-
-  /* --- MOVIE CARD --- */
-  .movie-card {
-    background: #222; border-radius: 12px; overflow: hidden;
-    text-align: center; cursor: pointer; transition: transform 0.3s, box-shadow 0.3s;
+  .channel-card img {
+    height: 250px;
   }
-  .movie-card:hover {
-    transform: scale(1.07);
-    box-shadow: 0 10px 25px rgba(255,0,0,0.5);
-  }
-  .movie-card img { width: 100%; display: block; border-bottom: 1px solid #333; }
-  .movie-card h3 { margin: 12px 0; font-size: 1.1em; }
-  .movie-card button {
-    background: #ff0000; color: white; border:none;
-    padding: 10px 20px; margin-bottom: 15px; border-radius: 8px;
-    font-weight: bold; transition: 0.3s; cursor: pointer;
-  }
-  .movie-card button:hover { background: #e60000; }
-
-  #subscribeNotice {
-    color: #ccc; text-align: center; margin-top: 20px;
-    font-size: 1em;
-  }
-
-  /* --- MODAL --- */
-  #movieModal {
-    position: fixed; top:0; left:0; width:100%; height:100%;
-    background: rgba(0,0,0,0.95); display: none;
-    justify-content: center; align-items: center; z-index: 9999;
-  }
-  #movieModalContent { position: relative; width: 90%; max-width: 900px; }
-  #movieModal iframe { width: 100%; height: 500px; border-radius: 10px; border:none; }
-  #movieModal button {
-    position: absolute; top:-40px; right:0; background:#ff0000;
-    color:white; border:none; border-radius:5px; padding:10px 15px;
-    cursor:pointer; font-size:16px; transition: 0.3s;
-  }
-  #movieModal button:hover { background:#e60000; }
-
-  /* --- PAYPAL BUTTON --- */
-  #paypal-button-container { display: flex; justify-content: center; margin-top: 20px; }
-
-  /* --- SUBSCRIBE BUTTON --- */
-  #subscribeButton {
-    background: #00cc00; color: white; border:none;
-    padding: 12px 25px; margin: 20px auto; display: block;
-    border-radius: 10px; font-weight: bold; cursor: pointer;
-    transition: 0.3s;
-  }
-  #subscribeButton:hover { background: #00aa00; }
-
-  /* --- CONTACT BUTTON --- */
-  #contactButton {
-    background: #333; color: #fff; border:none;
-    padding: 10px 20px; margin: 20px auto; display: block;
-    border-radius: 10px; font-weight: bold; cursor: pointer;
-    transition: 0.3s;
-    display: block;
-  }
-  #contactButton:hover { background: #555; }
-  #contactInfo {
-    display: none; text-align: center; margin-top: 15px; color: #ccc;
-    font-size: 0.95em;
-  }
-
-  /* --- RESPONSIVE --- */
-  @media(max-width:600px){
-    nav { flex-direction: column; gap: 10px; padding: 15px; }
-    .movie-card button { padding: 8px 15px; font-size: 0.9em; }
-  }
+}
 </style>
 </head>
 <body>
 
+<!-- LOCK SCREEN -->
+<div id="lockScreen">
+  <div class="lock-box">
+    <h2>🔒 Accès Premium</h2>
+    <input type="password" id="passwordInput" placeholder="Mot de passe">
+    <br>
+    <button class="unlock-btn" onclick="unlockSite()">Entrer</button>
+    <div id="errorMsg" style="color:red;margin-top:10px;"></div>
+  </div>
+</div>
+
 <!-- NAVIGATION -->
 <nav>
-  <h1>Malcomflix 🎬</h1>
+  <h2>Malcomflix</h2>
   <ul>
-    <li><a href="#gallery">Movies</a></li>
-    <li><a href="#subscribeNotice">Subscribe</a></li>
-    <li><a href="#contactInfo">Contact</a></li>
+    <li><a onclick="scrollToSection('kids')">Enfants</a></li>
+    <li><a onclick="scrollToSection('adults')">Adultes</a></li>
+    <li><a onclick="scrollToSection('films')">Films</a></li>
   </ul>
 </nav>
 
-<!-- MOVIE GALLERY -->
-<div id="movieGallery" class="card">
-  <h2>🎥 Your Video Collection</h2>
-  <div class="movie-gallery" id="gallery"></div>
-
-  <p id="subscribeNotice">
-    Unlock all movies by subscribing! <br>
-    <strong>Paid access: $5.00</strong>
-  </p>
-  <button id="subscribeButton">Subscribe Now</button>
-  <div id="paypal-button-container"></div>
-
-  <!-- Hidden Contact Button -->
-  <button id="contactButton" onclick="toggleContact()">Contact & Legal Info</button>
-  <div id="contactInfo">
-    📞 +33 753832799 <br>
-    📧 ma_lion_22@yahoo.co.uk <br>
-    🏢 Head Office: France <br>
-    © Malcomflix 2026
+<!-- HERO SECTION -->
+<section class="hero">
+  <div class="hero-content">
+    <h1>MALCOMFLIX</h1>
+    <p>Streaming premium gratuit. Expérience cinéma immersive.</p>
+    <button class="play-btn" onclick="scrollToSection('films')">▶ Regarder</button>
   </div>
-</div>
+</section>
 
-<!-- MODAL FOR MOVIE PLAYBACK -->
-<div id="movieModal">
-  <div id="movieModalContent">
-    <button onclick="closeModal()">✖ Close</button>
-    <iframe id="modalVideo" src="" allowfullscreen></iframe>
+<!-- KIDS SECTION -->
+<section class="section" id="kids">
+  <h2 class="section-title">👶 Enfants</h2>
+  <p class="kids-desc">📺 Free French Kids Cartoon Episodes & Channels — Click to Watch 🐷 Peppa Pig, Trotro & Friends</p>
+  <div class="horizontal-scroll">
+    <div class="channel-card" onclick="openChannel('https://www.youtube.com/watch?v=dvywlbgnFgI')">
+      <span class="badge live">LIVE</span>
+      <img src="https://images.unsplash.com/photo-1613553485992-fdd5c5e93b60?auto=format&fit=crop&w=800&q=80">
+      <div class="overlay"><h3>Peppa Pig EN DIRECT! (FR)</h3></div>
+    </div>
+    <div class="channel-card" onclick="openChannel('https://www.youtube.com/watch?v=rtjBQW_EuMw')">
+      <span class="badge live">LIVE</span>
+      <img src="https://images.unsplash.com/photo-1591747617877-cd17c1a7f7d7?auto=format&fit=crop&w=800&q=80">
+      <div class="overlay"><h3>Peppa Pig Français LIVE 24/7</h3></div>
+    </div>
+    <div class="channel-card" onclick="openChannel('https://www.youtube.com/results?search_query=Trotro+FR')">
+      <span class="badge live">LIVE</span>
+      <img src="https://images.unsplash.com/photo-1623069114354-ec6b6f4df66b?auto=format&fit=crop&w=800&q=80">
+      <div class="overlay"><h3>Trotro (FR)</h3></div>
+    </div>
+    <div class="channel-card" onclick="openChannel('https://www.youtube.com/results?search_query=Barbapapa+FR')">
+      <span class="badge live">LIVE</span>
+      <img src="https://images.unsplash.com/photo-1612392061780-09190fa9f530?auto=format&fit=crop&w=800&q=80">
+      <div class="overlay"><h3>Barbapapa (FR)</h3></div>
+    </div>
+    <div class="channel-card" onclick="openChannel('https://www.youtube.com/results?search_query=Petit+Ours+Brun+FR')">
+      <span class="badge live">LIVE</span>
+      <img src="https://images.unsplash.com/photo-1624712302465-8fa10d1e4db2?auto=format&fit=crop&w=800&q=80">
+      <div class="overlay"><h3>Petit Ours Brun (FR)</h3></div>
+    </div>
   </div>
-</div>
+</section>
+
+<!-- ADULT CHANNELS -->
+<section class="section" id="adults">
+  <h2 class="section-title">📺 Chaînes Adultes</h2>
+  <div class="channel-grid">
+    <div class="channel-card" onclick="openChannel('https://livetvworld.net/france-24-en-direct')">
+      <span class="badge live">LIVE</span>
+      <img src="https://images.unsplash.com/photo-1497032628192-86f99bcd76bc?auto=format&fit=crop&w=800&q=80">
+      <div class="overlay"><h3>France 24 Direct</h3></div>
+    </div>
+    <div class="channel-card" onclick="openChannel('https://www.arte.tv/fr/direct/')">
+      <span class="badge live">LIVE</span>
+      <img src="https://images.unsplash.com/photo-1502136969935-8d8eef54d77b?auto=format&fit=crop&w=800&q=80">
+      <div class="overlay"><h3>ARTE Direct</h3></div>
+    </div>
+  </div>
+</section>
+
+<!-- FILMS SECTION -->
+<section class="section" id="films">
+  <h2 class="section-title">🎥 Films Complets</h2>
+  <div class="horizontal-scroll">
+    <div class="channel-card" onclick="openChannel('https://www.youtube.com/results?search_query=film+complet+vf')">
+      <span class="badge film">FILM</span>
+      <img src="https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&w=800&q=80">
+      <div class="overlay"><h3>Films Complets VF</h3></div>
+    </div>
+    <div class="channel-card" onclick="openChannel('https://www.youtube.com/results?search_query=cine+movies+films+complets')">
+      <span class="badge film">FILM</span>
+      <img src="https://images.unsplash.com/photo-1522120691519-d3200e24a7c1?auto=format&fit=crop&w=800&q=80">
+      <div class="overlay"><h3>Ciné Movies</h3></div>
+    </div>
+    <div class="channel-card" onclick="openChannel('https://www.youtube.com/results?search_query=my+digital+channel+films')">
+      <span class="badge film">FILM</span>
+      <img src="https://images.unsplash.com/photo-1512428559087-560fa5ceab42?auto=format&fit=crop&w=800&q=80">
+      <div class="overlay"><h3>My Digital Channel</h3></div>
+    </div>
+    <div class="channel-card" onclick="openChannel('https://www.youtube.com/results?search_query=playlist+film+complet+vf')">
+      <span class="badge film">FILM</span>
+      <img src="https://images.unsplash.com/photo-1505682634904-d7c8d95cdc50?auto=format&fit=crop&w=800&q=80">
+      <div class="overlay"><h3>Playlist Films VF</h3></div>
+    </div>
+  </div>
+</section>
+
+<footer>© 2026 Malcomflix – Cinema Edition 🎥</footer>
 
 <script>
-/* --- MOCK USER PAID VIDEOS --- */
-function getUserVideos() {
-  return [
-    {title:"Premium Movie 1", image:"assets/images/premium1.jpg", video:"https://youtu.be/VIDEOID3"},
-    {title:"Premium Movie 2", image:"assets/images/premium2.jpg", video:"https://youtu.be/VIDEOID4"},
-    {title:"Premium Movie 3", image:"assets/images/premium3.jpg", video:"https://youtu.be/VIDEOID5"},
-    {title:"Premium Movie 4", image:"assets/images/premium4.jpg", video:"https://youtu.be/VIDEOID6"}
-  ];
-}
-
-/* --- CONVERT YOUTUBE URL FOR EMBED --- */
-function convertYouTubeURL(url) {
-  const id = url.split("youtu.be/")[1] || url.split("v=")[1];
-  return `https://www.youtube.com/embed/${id}?autoplay=1`;
-}
-
-/* --- DISPLAY VIDEO GALLERY --- */
-function showGallery() {
-  const videos = getUserVideos();
-  const gallery = document.getElementById("gallery");
-  gallery.innerHTML = "";
-
-  const freeMovies = [
-    {title:"Free Movie 1", image:"assets/images/free1.jpg", video:"https://youtu.be/VIDEOID1"},
-    {title:"Free Movie 2", image:"assets/images/free2.jpg", video:"https://youtu.be/VIDEOID2"},
-    {title:"Free Movie 3", image:"assets/images/free3.jpg", video:"https://youtu.be/VIDEOID7"},
-    {title:"Free Movie 4", image:"assets/images/free4.jpg", video:"https://youtu.be/VIDEOID8"}
-  ];
-
-  const allVideos = [...freeMovies, ...videos];
-
-  allVideos.forEach(video => {
-    const isPaid = videos.includes(video);
-    const card = document.createElement("div");
-    card.className = "movie-card";
-    card.innerHTML = `
-      <img src="${video.image}" alt="${video.title}">
-      <h3>${video.title} ${isPaid ? '🔒' : '✅ Free'}</h3>
-      <button onclick="playMovieModal('${convertYouTubeURL(video.video)}', '${isPaid ? 'paid' : 'free'}')">
-        ${isPaid ? 'Watch (Locked)' : 'Watch Now'}
-      </button>
-    `;
-    gallery.appendChild(card);
-  });
-}
-
-/* --- OPEN MOVIE MODAL --- */
-function playMovieModal(url, type) {
-  const modal = document.getElementById("movieModal");
-  const iframe = document.getElementById("modalVideo");
-
-  if(type === "paid" && localStorage.getItem("malcomflix_subscribed") !== "true") {
-    alert("🔒 This movie is locked. You can still view it for testing purposes.");
+function unlockSite() {
+  const password = document.getElementById("passwordInput").value;
+  const errorMsg = document.getElementById("errorMsg");
+  if(password === "1994") {
+    document.getElementById("lockScreen").style.display = "none";
+  } else {
+    errorMsg.textContent = "❌ Mot de passe incorrect";
   }
-
-  iframe.src = url;
-  modal.style.display = "flex";
 }
 
-/* --- CLOSE MODAL --- */
-function closeModal() {
-  const modal = document.getElementById("movieModal");
-  const iframe = document.getElementById("modalVideo");
-  iframe.src = "";
-  modal.style.display = "none";
+function openChannel(url) {
+  window.open(url, "_blank");
 }
 
-/* --- SUBSCRIBE BUTTON --- */
-document.getElementById("subscribeButton").addEventListener("click", () => {
-  localStorage.setItem("malcomflix_subscribed", "true");
-  alert("🎉 You are now subscribed! All paid movies are unlocked.");
-  showGallery(); // refresh gallery to show unlocked state
+function scrollToSection(id) {
+  const section = document.getElementById(id);
+  if(section) section.scrollIntoView({ behavior: "smooth" });
+}
+
+document.getElementById("passwordInput").addEventListener("keypress", function(e){
+  if(e.key === "Enter") unlockSite();
 });
-
-/* --- TOGGLE CONTACT INFO --- */
-function toggleContact() {
-  const info = document.getElementById("contactInfo");
-  info.style.display = info.style.display === "none" ? "block" : "none";
-}
-
-/* --- INIT --- */
-showGallery();
 </script>
 
 </body>
 </html>
-
-
-
